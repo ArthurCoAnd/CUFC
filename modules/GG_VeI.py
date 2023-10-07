@@ -1,7 +1,7 @@
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
-def GG_VeI(DD, VdV):	
+def GG_VeI(VdV):	
 	DT = VdV["DT"]
 	tx = VdV["tx"]
 	Ts = VdV["Ts"]
@@ -61,7 +61,4 @@ def GG_VeI(DD, VdV):
 	y = [0, iDmax, 0, 0, 0]
 	G_D.add_trace(go.Scatter(x=x, y=y, name="iD"), row=1, col=2)
 
-	if DD == "Enrolamento Primário": return G_L1
-	elif DD == "Enrolamento Secundário": return G_L2
-	elif DD == "Chave": return G_S
-	else: return G_D
+	return [G_L1, G_L2, G_S, G_D]

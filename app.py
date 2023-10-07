@@ -21,11 +21,10 @@ menu = dbc.Nav([
 	dbc.NavLink([
 		html.Div(p["name"], style={"font-size":20, "textAlign":"center"})
 	], href=p["path"], active="exact") for p in dash.page_registry.values()
-], vertical=True, pills=True)
+], pills=True)
 
 app.layout = dbc.Container([
 	dcc.Store(id="VdV-data", data=VdV_data),
-	dcc.Store(id="VdV-calc"),
 	dbc.Row([
 		dbc.Col([
 			html.Center(html.Img(src=IMG_CUFC, height="71px")),
@@ -36,13 +35,12 @@ app.layout = dbc.Container([
 	], style={"padding-top":"10px"}),
 	html.Hr(),
 	dbc.Row([
-		dbc.Col([
-			menu
-		], xs=4, sm=4, md=2, lg=2, xl=2, xxl=2),
-		dbc.Col([
-			dash.page_container
-		], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10),
-	])
+		menu
+	]),
+    html.Hr(),
+	dbc.Row([
+		dash.page_container
+	]),
 ], fluid=True)
 
 if __name__ == "__main__":
