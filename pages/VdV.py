@@ -62,8 +62,6 @@ layout = html.Div([
 	html.Hr(),
 	dbc.Container([
 		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-n-calc", mathjax=True, style={"font-size":30}))]),
-		# dbc.Row([html.Center(dbc.Input(id="VdV-I-n", type="number", min=0, max=10))]),
-		# dbc.Row([html.Center(dcc.Markdown(id="VdV-C-n", mathjax=True, style={"font-size":30}))]),
 		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-DT", mathjax=True, style={"font-size":30}))]),
 		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-tx", mathjax=True, style={"font-size":30}))]),
 		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Pi", mathjax=True, style={"font-size":30}))]),
@@ -94,10 +92,9 @@ layout = html.Div([
 		
 		html.Hr(),
 		dbc.Row([html.Center(html.H3("Espiras"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N1-calc", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N2-calc", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N2", mathjax=True, style={"font-size":30}))]),
 		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N1", mathjax=True, style={"font-size":30}))]),
+		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N2", mathjax=True, style={"font-size":30}))]),
+		# dbc.Row([html.Center(id="VdV-TAB-ESP")]),
 	]),
 	
 	#  ██████  ██████   █████  ███████ ██  ██████  ██████  
@@ -209,7 +206,7 @@ def configurar_elementos(VdV):
 	# SD_VdV(VdV)
 	IMG_CIRC_VdV = html.Img(src=Image.open("./images/circuitos/VdV.png"), width="100%")
 
-	C_n = f"$$n = \\frac{{N_2}}{{N_1}} = \\frac{{V_o \\cdot \\left( 1 - D \\right)}}{{V_i \\cdot D}}$$ = {VdV['N2N1']:.5f}"
+	C_n = f"$$n = \\frac{{N_2}}{{N_1}} \\leq \\frac{{V_o \\cdot \\left( 1 - D \\right)}}{{V_i \\cdot D}}$$ = {VdV['N2N1_calc']:.5f} $$\\Rightarrow n$$ = {VdV['N2N1']}"
 	C_DT = f"$$DT = D \\cdot T_s$$ = {R2SI(VdV['DT'])}s"
 	C_tx = f"$$t_x = DT \\cdot \\left( \\frac{{V_i \\cdot n}}{{V_o}} + 1 \\right)$$ = {R2SI(VdV['tx'])}s"
 	C_Pi = f"$$P_i = \\frac{{P_o}}{{\\eta}}$$ = {R2SI(VdV['Pi'])}W"
@@ -235,22 +232,26 @@ def configurar_elementos(VdV):
 		cell_selectable = False,
 		style_data_conditional=[
 			{"if": {
-				"filter_query": f"{{AeAw}} > {VdV['AeAw']*10e8}",
+				"filter_query": f"{{AeAw}} > {VdV['AeAw']*1e9}",
 				"column_id": "AeAw"
 			},
 			"backgroundColor": "green",
 			"color": "white"},
 			{"if": {
-				"filter_query": f"{{AeAw}} <= {VdV['AeAw']*10e8}",
+				"filter_query": f"{{AeAw}} <= {VdV['AeAw']*1e9}",
 				"column_id": "AeAw"
 			},
 			"backgroundColor": "red",
 			"color": "white"},
 		]
 	)
-	NUC_DF = AeAw_DF.loc[AeAw_DF["AeAw"] >= VdV["AeAw"]*10e8]
-	NUC_opt = NUC_DF["Núcleo"]
-	NUC_val = NUC_DF["Núcleo"][NUC_DF.index[0]]
+	NUC_DF = AeAw_DF.loc[AeAw_DF["AeAw"] >= VdV["AeAw"]*1e9]
+	if len(NUC_DF) > 0:
+		NUC_opt = NUC_DF["Núcleo"]
+		NUC_val = NUC_DF["Núcleo"][NUC_DF.index[0]]
+	else:
+		NUC_opt = ["E-55"]
+		NUC_val = "E-55"
 
 	fig = GG_VeI(VdV)
 
@@ -315,7 +316,8 @@ def alteração_das_entradas(*args):
 	
 	VdV["DT"] = VdV["D"]*VdV["Ts"]
 
-	VdV["N2N1"] = VdV["Vo"]*(1-VdV["D"])/(VdV["Vi"]*VdV["D"])
+	VdV["N2N1_calc"] = VdV["Vo"]*(1-VdV["D"])/(VdV["Vi"]*VdV["D"])
+	VdV["N2N1"] = int(VdV["N2N1_calc"]*10)/10
 
 	VdV["N1N2"] = 1/VdV["N2N1"]
 
@@ -347,7 +349,7 @@ def alteração_das_entradas(*args):
 	VdV["iDmax"] = VdV["iL2max"]
 
 	VdV["K"] = 0.25
-	VdV["AeAw"] = VdV["L1"]*VdV["iL1max"]*VdV["iL1rms"]/(VdV["Bmax"]*VdV["Jmax"]*10e4*VdV["K"])
+	VdV["AeAw"] = VdV["L1"]*VdV["iL1max"]*VdV["iL1rms"]/(VdV["Bmax"]*VdV["Jmax"]*1e5*VdV["K"])
 
 	VdV = dict(sorted(VdV.items(), key=lambda i: i[0].lower()))
 	# print(json.dumps(VdV, indent=2))
@@ -356,7 +358,10 @@ def alteração_das_entradas(*args):
 
 	return VdV, VdV["fs"], VdV["Ts"], VdV["dVo_V"], VdV["dVo_p"]
 
-@callback([Output("VdV-C-Co", "children"), Output("VdV-C-Ae", "children"), Output("VdV-C-Aw", "children")], [Input("VdV-DD-Co", "value"), Input("VdV-DD-NUC", "value")], State("VdV-data", "data"))
+@callback([
+	Output("VdV-C-Co", "children"), Output("VdV-C-Ae", "children"), Output("VdV-C-Aw", "children"),
+	Output("VdV-C-N1", "children"), Output("VdV-C-N2", "children"),
+	], [Input("VdV-DD-Co", "value"), Input("VdV-DD-NUC", "value")], State("VdV-data", "data"))
 def alteração_das_DD(Co, NUC, VdV):
 	Co_DF = CAP_DF.loc[CAP_DF["txt"] == Co]
 	Co = Co_DF["F"][Co_DF.index[0]]
@@ -368,4 +373,10 @@ def alteração_das_DD(Co, NUC, VdV):
 	Aw = NUC_DF["Aw"][NUC_DF.index[0]]
 	C_Aw = f"$$A_w$$ = {Aw}$$cm^4$$"
 
-	return C_Co, C_Ae, C_Aw
+	N1_calc = VdV["L1"]*VdV["iL1max"]/(1e-4*Ae*VdV["Bmax"])
+	N2 = int(N1_calc*VdV["N2N1_calc"])
+	N1 = int(N2/VdV["N2N1"])
+	C_N2 = f"$$N_2 = N_1 \\cdot n$$ = {N2}"
+	C_N1 = f"$$N_1 = \\frac{{L_1 \\cdot i_{{L_{{1_{{max}}}}}}}}{{A_e \\cdot B_{{max}}}}$$ = {N1_calc:.2f} $$\\Rightarrow N_1$$ = {N1}"
+
+	return C_Co, C_Ae, C_Aw, C_N1, C_N2

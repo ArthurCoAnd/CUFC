@@ -57,4 +57,4 @@ if __name__ == "__main__":
 	print('--------------------------------------------')
 	print('  Calculadora Universal de Fontes Chaveadas ')
 	print('--------------------------------------------')
-	app.run(debug=True)
+	app.run(debug=True, port="3363")
