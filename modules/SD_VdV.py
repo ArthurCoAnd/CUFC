@@ -12,7 +12,7 @@ import pandas as pd
 
 from tools.R2SI import R2SI
 
-def SD_VdV(VdV):
+def SD_VdV(VdV,N1,N2,Co):
 	
 	with schemdraw.Drawing(show=False) as d:
 		# Configurações
@@ -23,18 +23,18 @@ def SD_VdV(VdV):
 		Vi = elm.SourceV().up().label(Vi_str)
 		L1_str = f"$L_1$\n{R2SI(VdV['L1'])}H"
 		L2_str = f"$L_2$\n{R2SI(VdV['L2'])}H"
-		N1_str = f"$N_1$\n{R2SI(VdV['N1'])}"
-		N2_str = f"$N_2$\n{R2SI(VdV['N2'])}"
+		N1_str = f"$N_1$\n{N1}"
+		N2_str = f"$N_2$\n{N2}"
 		TR1_str = f"{L1_str}\n{N1_str}"
 		TR2_str = f"{L2_str}\n{N2_str}"
-		TRN_str = f"N1 : N2\n{R2SI(VdV['N1'])} : {R2SI(VdV['N2'])}"
+		TRN_str = f"N1 : N2\n{N1} : {N2}"
 		Tr = elm.Transformer(t1=5, t2=5).label(L1_str,"lft").label(L2_str,"rgt").label(TRN_str)
 		S = elm.Switch().label("$S$")
 		D = elm.Diode().label("$D$")
-		Co_str = f"$C_o$\n{R2SI(VdV['Co'])}F"
+		Co_str = f"$C_o$\n{R2SI(Co)}F"
 		Co = elm.Capacitor().label(Co_str)
-		Ro_str = f"$R_o$\n{R2SI(VdV['Ro'])}$\Omega$"
-		Ro = elm.Resistor().label(Ro_str)
+		Po_str = f"$P_o$\n{R2SI(VdV['Po'])}W"
+		Po = elm.Resistor().label(Po_str)
 		Vo_str = f"$V_o$\n{R2SI(VdV['Vo'])}V"
 		Vo = elm.Gap().label(("+",Vo_str,"–"))
 
@@ -54,7 +54,7 @@ def SD_VdV(VdV):
 		d.push(); d += Co.down(); d.pop()
 		d += elm.Line().right() # Lin5
 		d += elm.Dot()
-		d.push(); d += Ro.down(); d.pop()
+		d.push(); d += Po.down(); d.pop()
 		d += elm.Line().right().length(d.unit/2) # Lin6
 		d += elm.Dot()
 		d += Vo.down()
