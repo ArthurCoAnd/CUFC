@@ -16,11 +16,6 @@ dash.register_page(__name__, name="🛫 Voar de Volta 🛬", title="CUFC - Voar 
 
 CUFC_dir = os.path.dirname(__file__).replace("pages","")
 
-IMG_CIRC_VdV = html.Img(src=Image.open("./images/circuitos/VdV.png"), width="100%")
-IMG_CIRC_VdV_E1 = html.Img(src=Image.open("./images/circuitos/VdV_e1.png"), width="50%")
-IMG_CIRC_VdV_E2 = html.Img(src=Image.open("./images/circuitos/VdV_e2.png"), width="50%")
-IMG_CIRC_VdV_E3 = html.Img(src=Image.open("./images/circuitos/VdV_e3.png"), width="50%")
-
 AeAw_DF = pd.read_csv(f"{CUFC_dir}/data/AeAw.csv", sep=";", decimal=",")
 AWG_DF = pd.read_csv(f"{CUFC_dir}/data/AWG.csv", sep=";", decimal=",")
 CAP_DF = pd.read_csv(f"{CUFC_dir}/data/Capacitores.csv", sep=";", decimal=".")
@@ -43,13 +38,9 @@ layout = html.Div([
 	# ███████ ██   ████    ██    ██   ██ ██   ██ ██████  ██   ██ ███████ 
 
 	html.Hr(),
-	dbc.Container([
-		dbc.Row([
-			dbc.Col(children=[], xs=4, sm=4, md=2, lg=2, xl=2, xxl=2, id="VdV-ent"),
-			dbc.Col([
-				html.Center(children=IMG_CIRC_VdV, id="VdV-circ"),
-			], xs=8, sm=8, md=10, lg=10, xl=10, xxl=10),
-		]),
+	dbc.Row([
+		dbc.Col(html.Center(id="VdV-ent"), width=4),
+		dbc.Col(html.Center(id="VdV-circ"), width=8)
 	]),
 	
 	#  ██████  █████  ██       ██████ ██    ██ ██       ██████  ███████ 
@@ -61,61 +52,67 @@ layout = html.Div([
 	html.Hr(),
 	html.Div(html.Center(html.H1("Cálculos"))),
 	html.Hr(),
-	dbc.Container([
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-n-calc", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-DT", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-tx", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Pi", mathjax=True, style={"font-size":30}))]),
-		
-		html.Hr(),
-		dbc.Row([html.Center(html.H3("Indutores"))]),
-		dbc.Row([html.Center(html.H5("Primário"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-L1", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-iL1max", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-iL1rms", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(html.H5("Secundário"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-L2", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-iL2max", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-iL2rms", mathjax=True, style={"font-size":30}))]),
-		
-		html.Hr(),
-		dbc.Row([html.Center(html.H3("Capacitor de Saída"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Comin", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Div(dcc.Dropdown(id="VdV-DD-Co", options=CAP_DF["txt"], value=CAP_DF["txt"][CAP_DF.index[0]]))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Co", mathjax=True, style={"font-size":30}))]),
-		
-		html.Hr(),
-		dbc.Row([html.Center(html.H3("Núcleo"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-AeAw", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(id="VdV-TAB-AeAw")]),
-		dbc.Row([html.Div(dcc.Dropdown(id="VdV-DD-NUC", options=AeAw_DF["Núcleo"], value=AeAw_DF["Núcleo"][AeAw_DF.index[0]]))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Ae", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Aw", mathjax=True, style={"font-size":30}))]),
-		
-		html.Hr(),
-		dbc.Row([html.Center(html.H3("Espiras"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N1", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-N2", mathjax=True, style={"font-size":30}))]),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-n-calc", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-DT", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-tx", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Pi", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Indutores"))),
+	dbc.Row(html.Center(html.H5("Primário"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-L1", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-iL1max", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-iL1rms", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(html.H5("Secundário"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-L2", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-iL2max", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-iL2rms", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Capacitor de Saída"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Comin", mathjax=True, style={"font-size":30}))),
+	dbc.Row(dcc.Dropdown(id="VdV-DD-Co", options=CAP_DF["txt"], value=CAP_DF["txt"][CAP_DF.index[0]], style={"text-align":"center","background-color":"#a5eea5"}, clearable=False)),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Co", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Núcleo"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-AeAw", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(id="VdV-TAB-AeAw")),
+	dbc.Row(dcc.Dropdown(id="VdV-DD-NUC", options=AeAw_DF["Núcleo"], value=AeAw_DF["Núcleo"][AeAw_DF.index[0]], style={"text-align":"center","background-color":"#a5eea5"}, clearable=False)),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Ae", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Aw", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Enrolamentos"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-N1", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-N2", mathjax=True, style={"font-size":30}))),
 
-		html.Hr(),
-		dbc.Row([html.Center(html.H3("Condutores"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-delta", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Askin", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(id="VdV-TAB-AWG")]),
-		dbc.Row([html.Center(html.H5("Fio Primário"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Af1", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Div(dcc.Dropdown(id="VdV-DD-AWG-f1", options=AWG_DF["AWG"], value=AWG_DF["AWG"][AeAw_DF.index[0]]))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-NCP-f1", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(html.H5("Fio Secundário"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Af2", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Div(dcc.Dropdown(id="VdV-DD-AWG-f2", options=AWG_DF["AWG"], value=AWG_DF["AWG"][AeAw_DF.index[0]]))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-NCP-f2", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(html.H5("Entreferro"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-lg", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(html.H5("Fator de Execução"))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-Aw-min", mathjax=True, style={"font-size":30}))]),
-		dbc.Row([html.Center(dcc.Markdown(id="VdV-C-FE", mathjax=True, style={"font-size":30}))]),
-	]),
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Condutores"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-delta", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Askin", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(id="VdV-TAB-AWG")),
+
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Fio Primário"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Af1", mathjax=True, style={"font-size":30}))),
+	dbc.Row(dcc.Dropdown(id="VdV-DD-AWG-f1", options=AWG_DF["AWG"], value=AWG_DF["AWG"][AeAw_DF.index[0]], style={"text-align":"center","background-color":"#a5eea5"}, clearable=False)),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-NCP-f1", mathjax=True, style={"font-size":30}))),
+
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Fio Secundário"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Af2", mathjax=True, style={"font-size":30}))),
+	dbc.Row(dcc.Dropdown(id="VdV-DD-AWG-f2", options=AWG_DF["AWG"], value=AWG_DF["AWG"][AeAw_DF.index[0]], style={"text-align":"center","background-color":"#a5eea5"}, clearable=False)),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-NCP-f2", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Entreferro"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-lg", mathjax=True, style={"font-size":30}))),
+	
+	html.Hr(),
+	dbc.Row(html.Center(html.H3("Fator de Execução"))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-Aw-min", mathjax=True, style={"font-size":30}))),
+	dbc.Row(html.Center(dcc.Markdown(id="VdV-C-FE", mathjax=True, style={"font-size":30}))),
 	
 	#  ██████  ██████   █████  ███████ ██  ██████  ██████  
 	# ██       ██   ██ ██   ██ ██      ██ ██      ██    ██ 
@@ -126,16 +123,16 @@ layout = html.Div([
 	html.Hr(),
 	html.Div(html.Center(html.H1("Tensões e Correntes"))),
 	html.Hr(),
-	dbc.Container([
-		dbc.Row([html.Center(html.H3("Enrolamento Primário"))]),
-		dbc.Row([dcc.Graph(id="VdV-G-L1")]),
-		dbc.Row([html.Center(html.H3("Enrolamento Secundário"))]),
-		dbc.Row([dcc.Graph(id="VdV-G-L2")]),
-		dbc.Row([html.Center(html.H3("Chave"))]),
-		dbc.Row([dcc.Graph(id="VdV-G-S")]),
-		dbc.Row([html.Center(html.H3("Diodo"))]),
-		dbc.Row([dcc.Graph(id="VdV-G-D")]),
-	]),
+	dbc.Row(html.Center(html.H3("Enrolamento Primário"))),
+	dbc.Row(dcc.Graph(id="VdV-G-L1")),
+	dbc.Row(html.Center(html.H3("Enrolamento Secundário"))),
+	dbc.Row(dcc.Graph(id="VdV-G-L2")),
+	dbc.Row(html.Center(html.H3("Chave"))),
+	dbc.Row(dcc.Graph(id="VdV-G-S")),
+	dbc.Row(html.Center(html.H3("Diodo"))),
+	dbc.Row(dcc.Graph(id="VdV-G-D")),
+
+	html.Center(html.Audio(src=f"assets/BTTF.mp3", autoPlay=True, controls=True))
 ])
 
 #  ██████  ██████  ███    ██ ███████ ██  ██████  ██    ██ ██████   █████  ██████  
@@ -159,24 +156,24 @@ layout = html.Div([
 def configurar_elementos(VdV):
 	ENTRADAS = html.Div([
 		dbc.Row([
-			dbc.Col([html.Div("Vi")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Vi", value=VdV["Vi"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("V")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Vi"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Vi", value=VdV["Vi"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("V"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("Vo")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Vo", value=VdV["Vo"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("V")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Vo"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Vo", value=VdV["Vo"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("V"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("Po")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Po", value=VdV["Po"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("W")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Po"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Po", value=VdV["Po"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("W"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Center(dcc.Markdown("$$\\eta$$", mathjax=True))], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-rend", value=VdV["rend"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("%")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Center(dcc.Markdown("$$\\eta$$", mathjax=True)), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-rend", value=VdV["rend"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("%"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 
 		html.Hr(),
@@ -184,14 +181,14 @@ def configurar_elementos(VdV):
 			html.Center(dbc.RadioItems(["V","%"], VdV["RI_dVo"], inline=True, id="VdV-RI-dVo"))
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("ΔVo")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-dVo_V", value=VdV["dVo_V"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("V")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("ΔVo"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-dVo_V", value=VdV["dVo_V"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("V"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("ΔVo")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-dVo_p", value=VdV["dVo_p"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("%")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("ΔVo"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-dVo_p", value=VdV["dVo_p"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("%"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 
 		html.Hr(),
@@ -199,30 +196,30 @@ def configurar_elementos(VdV):
 			html.Center(dbc.RadioItems(["fs","Ts"], VdV["RI_fsTs"], inline=True, id="VdV-RI-fsTs"))
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("fs")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-fs", value=VdV["fs"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("Hz")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("fs"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-fs", value=VdV["fs"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("Hz"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("Ts")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Ts", value=VdV["Ts"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("s")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Ts"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Ts", value=VdV["Ts"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("s"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("D")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-D", value=VdV["D"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("D"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-D", value=VdV["D"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
 		]),
 
 		html.Hr(),
 		dbc.Row([
-			dbc.Col([html.Div("Bmax")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Bmax", value=VdV["Bmax"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("T")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Bmax"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Bmax", value=VdV["Bmax"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("T"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 		dbc.Row([
-			dbc.Col([html.Div("Jmax")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
-			dbc.Col([dbc.Input(id="VdV-I-Jmax", value=VdV["Jmax"], type="number", debounce=True)], xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
-			dbc.Col([html.Div("A/cm²")], xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(html.Div("Jmax"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
+			dbc.Col(dbc.Input(id="VdV-I-Jmax", value=VdV["Jmax"], type="number", debounce=True), xs=2, sm=2, md=8, lg=8, xl=8, xxl=8),
+			dbc.Col(html.Div("A/cm²"), xs=1, sm=1, md=2, lg=2, xl=2, xxl=2),
 		]),
 	])
 
@@ -298,23 +295,25 @@ def configurar_elementos(VdV):
 		]
 	)
 	TAB_Askin = AWG_DF.loc[AWG_DF["ACu"] < VdV["Askin"]]
-	AWG_min = TAB_Askin["AWG"][TAB_Askin.index[0]]
+	AWG_f1f2_opt = TAB_Askin["AWG"].tolist()
 
 	C_Af1 = f"$$A_{{fio_1}} = \\frac{{i_{{L_{{1_{{rms}}}}}}}}{{J_{{max}}}}$$ = {R2SI(VdV['Af1'])}cm²"
-	TAB_f1 = AWG_DF.loc[AWG_DF["ACu"] < VdV["Af1"]]
-	TAB_f1 = TAB_f1.loc[TAB_f1["AWG"] >= AWG_min]
-	AWG_f1_val = TAB_f1["AWG"].tolist()
-	AWG_f1_opt = AWG_f1_val[0]
+	TAB_f1 = TAB_Askin.loc[TAB_Askin["ACu"] < VdV["Af1"]]
+	if TAB_f1.index[0] > TAB_Askin.index[0]:
+		AWG_f1_val = TAB_Askin["AWG"][TAB_f1.index[0]-1]
+	else:
+		AWG_f1_val = TAB_Askin["AWG"][TAB_Askin.index[0]]
 
 	C_Af2 = f"$$A_{{fio_2}} = \\frac{{i_{{L_{{2_{{rms}}}}}}}}{{J_{{max}}}}$$ = {R2SI(VdV['Af2'])}cm²"
-	TAB_f2 = AWG_DF.loc[AWG_DF["ACu"] < VdV["Af2"]]
-	TAB_f2 = TAB_f2.loc[TAB_f2["AWG"] >= AWG_min]
-	AWG_f2_val = TAB_f2["AWG"].tolist()
-	AWG_f2_opt = AWG_f2_val[0]
+	TAB_f2 = TAB_Askin.loc[TAB_Askin["ACu"] < VdV["Af2"]]
+	if TAB_f2.index[0] > TAB_Askin.index[0]:
+		AWG_f2_val = TAB_Askin["AWG"][TAB_f2.index[0]-1]
+	else:
+		AWG_f2_val = TAB_Askin["AWG"][TAB_Askin.index[0]]
 	
 	fig = GG_VeI(VdV)
 
-	return ENTRADAS, C_n, C_DT, C_tx, C_Pi, C_L1, C_iL1max, C_iL1rms, C_L2, C_iL2max, C_iL2rms, C_Comin, Co_opt, Co_val, C_AeAw, TAB_AeAw, NUC_opt, NUC_val, C_delta, C_Askin, TAB_AWG, C_Af1, AWG_f1_val, AWG_f1_opt, C_Af2, AWG_f2_val, AWG_f2_opt, fig[0], fig[1], fig[2], fig[3]
+	return ENTRADAS, C_n, C_DT, C_tx, C_Pi, C_L1, C_iL1max, C_iL1rms, C_L2, C_iL2max, C_iL2rms, C_Comin, Co_opt, Co_val, C_AeAw, TAB_AeAw, NUC_opt, NUC_val, C_delta, C_Askin, TAB_AWG, C_Af1, AWG_f1f2_opt, AWG_f1_val, C_Af2, AWG_f1f2_opt, AWG_f2_val, fig[0], fig[1], fig[2], fig[3]
 
 #  █████  ██      ████████ ███████ ██████   █████  ██████  
 # ██   ██ ██         ██    ██      ██   ██ ██   ██ ██   ██ 
@@ -442,42 +441,52 @@ def alteração_das_entradas(*args):
 		Input("VdV-DD-AWG-f1", "value"), Input("VdV-DD-AWG-f2", "value"),
 	], State("VdV-data", "data"))
 def alteração_das_DD(Co, NUC, AWG_f1, AWG_f2, VdV):
+	# Capacitor
 	Co_DF = CAP_DF.loc[CAP_DF["txt"] == Co]
 	Co = Co_DF["F"][Co_DF.index[0]]
 	C_Co = f"$$C_o$$ = {R2SI(Co)}F"
 
+	# Escolha do Núcleo
 	NUC_DF = AeAw_DF.loc[AeAw_DF["Núcleo"] == NUC]
 	Ae = NUC_DF["Ae"][NUC_DF.index[0]]
 	C_Ae = f"$$A_e$$ = {Ae}$$cm^4$$"
 	Aw = NUC_DF["Aw"][NUC_DF.index[0]]
 	C_Aw = f"$$A_w$$ = {Aw}$$cm^4$$"
 
+	# Enrolamentos
 	N1_calc = VdV["L1"]*VdV["iL1max"]/(1e-4*Ae*VdV["Bmax"])
 	N2 = int(N1_calc*VdV["N2N1_calc"])
 	N1 = int(N2/VdV["N2N1"])
 	C_N2 = f"$$N_2 = N_1 \\cdot n$$ = {N2}"
 	C_N1 = f"$$N_1 = \\frac{{L_1 \\cdot i_{{L_{{1_{{max}}}}}}}}{{A_e \\cdot B_{{max}}}}$$ = {N1_calc:.2f} $$\\Rightarrow N_1$$ = {N1}"
 
+
+	# Fios
 	TAB_Askin = AWG_DF.loc[AWG_DF["ACu"] < VdV["Askin"]]
+	
+		# Primário
 	TAB_f1 = TAB_Askin.loc[TAB_Askin["AWG"] == AWG_f1]
 	ACu_f1 = TAB_f1["ACu"][TAB_f1.index[0]]
 	AIso_f1 = TAB_f1["AIso"][TAB_f1.index[0]]
+	NCP_f1 = ceil(VdV["Af1"]/ACu_f1)
+	C_NCP_f1 = f"$$NCP_{{fio_1}} = \\frac{{A_{{fio_1}}}}{{A_{{AWG_1}}}}$$ = {NCP_f1}"
+	
+		# Secundário
 	TAB_f2 = TAB_Askin.loc[TAB_Askin["AWG"] == AWG_f2]
 	ACu_f2 = TAB_f2["ACu"][TAB_f2.index[0]]
 	AIso_f2 = TAB_f2["AIso"][TAB_f2.index[0]]
-
-	NCP_f1 = ceil(VdV["Af1"]/ACu_f1)
 	NCP_f2 = ceil(VdV["Af2"]/ACu_f2)
-	C_NCP_f1 = f"$$NCP_{{fio_1}} = \\frac{{A_{{fio_1}}}}{{A_{{AWG_1}}}}$$ = {NCP_f1}"
 	C_NCP_f2 = f"$$NCP_{{fio_2}} = \\frac{{A_{{fio_2}}}}{{A_{{AWG_2}}}}$$ = {NCP_f2}"
 
+	# Entreferro
 	lg = N1*N1*Ae*1e-4*4*pi*1e-7/VdV["L1"]
-	C_lg = f"$$\\frac{{N_1^2 \\cdot A_e \\cdot \\mu_0}}{{L_1}}$$ = {R2SI(lg)}m"
+	C_lg = f"$$lg = \\frac{{N_1^2 \\cdot A_e \\cdot \\mu_0}}{{L_1}}$$ = {R2SI(lg)}m"
 
+	# Fator de Execução
 	Aw_min = N1*NCP_f1*AIso_f1 + N2*NCP_f2*AIso_f2
 	C_Aw_min = f"$$A_{{W_{{min}}}} = N_1 \\cdot NCP_1 \\cdot A_{{Iso_1}} + N_2 \\cdot NCP_2 \\cdot A_{{Iso_2}}$$ = {R2SI(Aw_min)}cm²"
 	FE = Aw_min/Aw
-	C_FE = f"$$FE = \\frac{{AW_{{min}}}}{{AW}}$$ = {FE:.3f}"
+	C_FE = f"$$FE = \\frac{{A_{{W_{{min}}}}}}{{A_W}}$$ = {FE:.3f}"
 
 	SD_VdV(VdV,N1,N2,Co)
 	IMG_CIRC_VdV = html.Img(src=Image.open("./images/circuitos/VdV.png"), width="100%")
