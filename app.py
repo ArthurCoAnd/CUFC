@@ -1,11 +1,16 @@
 # Bibliotecas
-import dash
 from dash import Dash, html, dcc
+from PIL import Image
+import dash
 import dash_bootstrap_components as dbc
+import json
 import os
 import pandas as pd
-from PIL import Image
-import json
+
+# Configurações de Log
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app_dir = os.path.dirname(__file__)
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.UNITED], suppress_callback_exceptions=True)
@@ -57,4 +62,7 @@ if __name__ == "__main__":
 	print('--------------------------------------------')
 	print('  Calculadora Universal de Fontes Chaveadas ')
 	print('--------------------------------------------')
+	print('-           http://127.0.0.1:3363          -')
+	print('--------------------------------------------')
 	app.run(debug=True, port="3363")
+	# app.run_server(host="0.0.0.0", debug=False, port="3363")
